@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ghostsoc"
+version = "0.1.0"
+description = "Autonomous security analyst that drives the ghostsuite tools, correlates their findings across tools, and writes one ranked report."
+readme = "README.md"
+license = "MIT"
+authors = [{name = "Joe Munene"}]
+requires-python = ">=3.10"
+keywords = ["cybersecurity", "soc", "orchestration", "mcp", "ghostsuite", "correlation", "security-automation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Information Technology",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0", "ruff>=0.4.0"]
+
+[project.urls]
+Homepage = "https://github.com/joemunene-by/ghostsoc"
+Repository = "https://github.com/joemunene-by/ghostsoc"
+Issues = "https://github.com/joemunene-by/ghostsoc/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ghostsoc*"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+include = ["ghostsoc/**/*.py", "tests/**/*.py", "pyproject.toml"]

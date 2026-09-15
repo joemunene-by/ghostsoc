@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ghostsoc run output
+reports/
+*.ghostsoc.json
