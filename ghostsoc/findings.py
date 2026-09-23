@@ -7,6 +7,7 @@ ever sees this.
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass, field, asdict
 from enum import IntEnum
 
@@ -76,7 +77,18 @@ class Finding:
     def __post_init__(self) -> None:
         self.severity = Severity.parse(self.severity)
 
+    @property
+    def fingerprint(self) -> str:
+        """Identity of the thing found, stable across reruns.
+
+        Tool plus rule plus asset, not evidence: the same leaked key seen twice
+        is one finding, even if the line number drifted between scans.
+        """
+        seed = f"{self.tool}|{self.rule_id}|{self.asset}".lower()
+        return hashlib.sha1(seed.encode()).hexdigest()[:16]
+
     def to_dict(self) -> dict:
         d = asdict(self)
         d["severity"] = str(self.severity)
+        d["fingerprint"] = self.fingerprint
         return d
