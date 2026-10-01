@@ -26,6 +26,9 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest>=8.0.0", "ruff>=0.4.0"]
 
+[project.scripts]
+ghostsoc = "ghostsoc.cli:main"
+
 [project.urls]
 Homepage = "https://github.com/joemunene-by/ghostsoc"
 Repository = "https://github.com/joemunene-by/ghostsoc"
