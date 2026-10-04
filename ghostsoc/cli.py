@@ -6,6 +6,7 @@ import sys
 from ghostsoc import __version__
 from ghostsoc.adapters import all_adapters
 from ghostsoc.engine import scan
+from ghostsoc.report import to_json, to_markdown, write
 
 
 def _cmd_adapters(args: argparse.Namespace) -> int:
@@ -21,16 +22,11 @@ def _cmd_scan(args: argparse.Namespace) -> int:
     result = scan(args.target, only=only)
     if result.skipped:
         print(f"skipped (not installed): {', '.join(result.skipped)}", file=sys.stderr)
-    if not result.chains:
-        print(f"no findings on {args.target}")
+    if args.out:
+        write(result, args.out, fmt=args.format)
+        print(f"wrote {args.format} report to {args.out}", file=sys.stderr)
         return 0
-    print(f"{args.target}: {len(result.chains)} assets, ran {', '.join(result.ran)}\n")
-    for c in result.chains:
-        print(f"[{c.severity}] {c.asset}")
-        print(f"    {c.rationale}")
-        for f in c.findings:
-            print(f"      - {f.tool}: {f.title} ({f.severity})")
-        print()
+    print(to_json(result) if args.format == "json" else to_markdown(result))
     return 0
 
 
@@ -46,6 +42,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_scan = sub.add_parser("scan", help="scan a target with every available adapter")
     p_scan.add_argument("target")
     p_scan.add_argument("--only", help="comma-separated adapter names to run instead of all")
+    p_scan.add_argument("--format", choices=("md", "json"), default="md", help="report format")
+    p_scan.add_argument("--out", help="write the report to a file instead of stdout")
     p_scan.set_defaults(func=_cmd_scan)
     return parser
 
