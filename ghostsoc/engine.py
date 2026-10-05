@@ -56,11 +56,15 @@ def scan(target: str, only: list[str] | None = None, workers: int = 4) -> ScanRe
         else:
             skipped.append(adapter.name)
 
+    errors: dict[str, str] = {}
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {pool.submit(a.scan, target): a for a in runnable}
         for future, adapter in futures.items():
-            raw.extend(future.result())
-            ran.append(adapter.name)
+            try:
+                raw.extend(future.result())
+                ran.append(adapter.name)
+            except Exception as exc:  # one tool blowing up should not sink the scan
+                errors[adapter.name] = str(exc)
 
     findings = dedupe(raw)
     chains = chain(findings)
@@ -70,6 +74,7 @@ def scan(target: str, only: list[str] | None = None, workers: int = 4) -> ScanRe
         findings=findings,
         ran=ran,
         skipped=skipped,
+        errors=errors,
         started=started,
         finished=time.time(),
     )
