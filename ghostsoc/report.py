@@ -43,6 +43,9 @@ def to_markdown(result: ScanResult) -> str:
         lines.append(f"**{c.severity}** &middot; {', '.join(c.tools)}")
         lines.append("")
         lines.append(c.rationale + ".")
+        if c.note:
+            lines.append("")
+            lines.append(f"> {c.note}")
         lines.append("")
         for f in c.findings:
             ref = f" ({f.references[0]})" if f.references else ""

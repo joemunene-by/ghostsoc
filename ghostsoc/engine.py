@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from ghostsoc.adapters import Adapter, all_adapters, get_adapter
 from ghostsoc.correlate import Chain, chain, dedupe
 from ghostsoc.findings import Finding
+from ghostsoc.reason import triage
 
 
 @dataclass
@@ -43,7 +44,7 @@ def _select(only: list[str] | None) -> list[Adapter]:
     return all_adapters()
 
 
-def scan(target: str, only: list[str] | None = None, workers: int = 4) -> ScanResult:
+def scan(target: str, only: list[str] | None = None, workers: int = 4, reason: bool = True) -> ScanResult:
     started = time.time()
     adapters = _select(only)
     ran, skipped = [], []
@@ -67,7 +68,7 @@ def scan(target: str, only: list[str] | None = None, workers: int = 4) -> ScanRe
                 errors[adapter.name] = str(exc)
 
     findings = dedupe(raw)
-    chains = chain(findings)
+    chains = triage(chain(findings), use_model=reason)
     return ScanResult(
         target=target,
         chains=chains,
