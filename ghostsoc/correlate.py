@@ -61,12 +61,14 @@ class Chain:
     severity: Severity
     rationale: str
     tools: list[str] = field(default_factory=list)
+    note: str = ""
 
     def to_dict(self) -> dict:
         return {
             "asset": self.asset,
             "severity": str(self.severity),
             "rationale": self.rationale,
+            "note": self.note,
             "tools": self.tools,
             "findings": [f.to_dict() for f in self.findings],
         }
