@@ -6,7 +6,7 @@ import sys
 from ghostsoc import __version__
 from ghostsoc.adapters import all_adapters
 from ghostsoc.engine import scan
-from ghostsoc.report import to_json, to_markdown, write
+from ghostsoc.report import _RENDER, write
 
 
 def _cmd_adapters(args: argparse.Namespace) -> int:
@@ -26,7 +26,7 @@ def _cmd_scan(args: argparse.Namespace) -> int:
         write(result, args.out, fmt=args.format)
         print(f"wrote {args.format} report to {args.out}", file=sys.stderr)
         return 0
-    print(to_json(result) if args.format == "json" else to_markdown(result))
+    print(_RENDER[args.format](result))
     return 0
 
 
@@ -42,7 +42,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_scan = sub.add_parser("scan", help="scan a target with every available adapter")
     p_scan.add_argument("target")
     p_scan.add_argument("--only", help="comma-separated adapter names to run instead of all")
-    p_scan.add_argument("--format", choices=("md", "json"), default="md", help="report format")
+    p_scan.add_argument("--format", choices=("md", "json", "html"), default="md", help="report format")
     p_scan.add_argument("--out", help="write the report to a file instead of stdout")
     p_scan.set_defaults(func=_cmd_scan)
     return parser
