@@ -24,10 +24,12 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
+mcp = ["mcp>=1.2.0"]
 dev = ["pytest>=8.0.0", "ruff>=0.4.0"]
 
 [project.scripts]
 ghostsoc = "ghostsoc.cli:main"
+ghostsoc-mcp = "ghostsoc.mcp_server:main"
 
 [project.urls]
 Homepage = "https://github.com/joemunene-by/ghostsoc"
