@@ -8,8 +8,7 @@ The fallback is deliberately plain so a scan is still useful offline.
 
 from __future__ import annotations
 
-from ghostsoc.correlate import Chain, _ROLES
-
+from ghostsoc.correlate import _ROLES, Chain
 
 _TEMPLATES = {
     frozenset({"exposure", "secret"}): (

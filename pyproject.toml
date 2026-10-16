@@ -44,3 +44,6 @@ include = ["ghostsoc*"]
 line-length = 110
 target-version = "py310"
 include = ["ghostsoc/**/*.py", "tests/**/*.py", "pyproject.toml"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

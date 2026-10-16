@@ -11,7 +11,6 @@ from dataclasses import dataclass, field
 
 from ghostsoc.findings import Finding, Severity
 
-
 _ROLES = {
     "attack-surface": "exposure",
     "recon": "exposure",

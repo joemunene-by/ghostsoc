@@ -8,7 +8,7 @@ ever sees this.
 from __future__ import annotations
 
 import hashlib
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 from enum import IntEnum
 
 
@@ -20,7 +20,7 @@ class Severity(IntEnum):
     CRITICAL = 4
 
     @classmethod
-    def parse(cls, value: object) -> "Severity":
+    def parse(cls, value: object) -> Severity:
         if isinstance(value, Severity):
             return value
         if isinstance(value, (int, float)):

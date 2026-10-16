@@ -11,7 +11,6 @@ from __future__ import annotations
 from ghostsoc.adapters.base import Adapter, register
 from ghostsoc.findings import Finding, Severity
 
-
 _SEVERITY_BY_CLASS = {
     "secret": Severity.HIGH,
     "credential": Severity.HIGH,

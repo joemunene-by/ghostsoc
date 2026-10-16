@@ -10,7 +10,6 @@ from __future__ import annotations
 from ghostsoc.adapters.base import Adapter
 from ghostsoc.findings import Finding, Severity
 
-
 _LEVEL = {"error": Severity.HIGH, "warning": Severity.MEDIUM, "note": Severity.LOW, "none": Severity.INFO}
 
 

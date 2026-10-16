@@ -12,7 +12,6 @@ import json
 
 from ghostsoc.engine import ScanResult
 
-
 _CSS = """
 body { max-width: 52rem; margin: 2rem auto; padding: 0 1rem;
   font: 15px/1.55 Georgia, "Times New Roman", serif; color: #111; background: #fff; }
@@ -37,7 +36,8 @@ def to_json(result: ScanResult, indent: int = 2) -> str:
 
 def to_markdown(result: ScanResult) -> str:
     lines = [f"# ghostsoc report: {result.target}", ""]
-    lines.append(f"Ran {', '.join(result.ran) or 'nothing'} in {round(result.finished - result.started, 2)}s.")
+    took = round(result.finished - result.started, 2)
+    lines.append(f"Ran {', '.join(result.ran) or 'nothing'} in {took}s.")
     if result.skipped:
         lines.append(f"Skipped (tool not installed): {', '.join(result.skipped)}.")
     if result.errors:
@@ -97,7 +97,9 @@ def to_html(result: ScanResult) -> str:
         out.append("<ul>")
         for f in c.findings:
             desc = f'<br><span class="desc">{_esc(f.description)}</span>' if f.description else ""
-            out.append(f'<li><span class="sev">{f.severity}</span> {_esc(f.tool)}: {_esc(f.title)}{desc}</li>')
+            out.append(
+                f'<li><span class="sev">{f.severity}</span> {_esc(f.tool)}: {_esc(f.title)}{desc}</li>'
+            )
         out.append("</ul>")
     out.append("</body></html>")
     return "\n".join(out)
