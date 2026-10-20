@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## v0.1.0 - 2026-10-20
+
+First release.
 
 ### Added
 - Normalised `Finding` model with a stable fingerprint shared by every adapter.
@@ -11,3 +13,4 @@
 - Engine that selects available adapters, runs them in parallel and isolates failures.
 - Markdown, JSON and HTML reports.
 - CLI (`ghostsoc scan`, `ghostsoc adapters`) and an MCP server (`ghostsoc-mcp`).
+- Asset correlation keeps bare IPv6 hosts intact and unwraps bracketed IPv6.
