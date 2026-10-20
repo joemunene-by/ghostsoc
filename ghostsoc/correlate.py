@@ -122,8 +122,14 @@ def _root(asset: str) -> str:
     value = asset
     if "://" in value:
         value = value.split("://", 1)[1].split("/", 1)[0]
-    if ":" in value:
-        head, tail = value.rsplit(":", 1)
+    # Bracketed IPv6, optionally with a port: [2001:db8::1]:8080 -> 2001:db8::1.
+    if value.startswith("["):
+        return value[1:].split("]", 1)[0]
+    # host:port or file:line. Only strip a trailing numeric segment when there
+    # is a single colon; a bare IPv6 address has several and must stay whole,
+    # otherwise distinct hosts (::1, ::2) would collapse to the same root.
+    if value.count(":") == 1:
+        head, tail = value.split(":", 1)
         if tail.isdigit():
             value = head
     return value

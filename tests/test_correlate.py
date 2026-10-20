@@ -1,4 +1,4 @@
-from ghostsoc.correlate import chain, dedupe
+from ghostsoc.correlate import _root, chain, dedupe
 from ghostsoc.findings import Finding, Severity
 
 
@@ -51,3 +51,22 @@ def test_chain_does_not_lift_two_findings_of_the_same_role():
     ]
     chains = chain(findings)
     assert chains[0].severity == Severity.LOW
+
+
+def test_root_strips_port_and_line_but_keeps_ipv6():
+    assert _root("api.example.com:8080") == "api.example.com"
+    assert _root("config.yaml:12") == "config.yaml"
+    assert _root("http://api.example.com:8080/path") == "api.example.com"
+    # Bracketed IPv6 drops its brackets and any port.
+    assert _root("[2001:db8::1]:8443") == "2001:db8::1"
+    # A bare IPv6 address must stay whole, not be truncated at the last colon.
+    assert _root("2001:db8::1") == "2001:db8::1"
+
+
+def test_chain_keeps_distinct_ipv6_hosts_apart():
+    findings = [
+        _f("ghostrecon", "recon.host", Severity.INFO, "2001:db8::1", "recon"),
+        _f("ghostrecon", "recon.host", Severity.INFO, "2001:db8::2", "recon"),
+    ]
+    chains = chain(findings)
+    assert len(chains) == 2
