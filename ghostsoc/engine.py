@@ -64,7 +64,7 @@ def scan(target: str, only: list[str] | None = None, workers: int = 4, reason: b
             try:
                 raw.extend(future.result())
                 ran.append(adapter.name)
-            except Exception as exc:  # one tool blowing up should not sink the scan
+            except Exception as exc:  
                 errors[adapter.name] = str(exc)
 
     findings = dedupe(raw)

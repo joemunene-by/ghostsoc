@@ -49,7 +49,7 @@ _ALIASES = {
 
 
 def _from_score(score: float) -> Severity:
-    # CVSS-style 0-10 band, the common case when a tool hands us a number.
+    # CVSS-style 0-10 band, the common case when a tool hands us a number
     if score >= 9.0:
         return Severity.CRITICAL
     if score >= 7.0:
